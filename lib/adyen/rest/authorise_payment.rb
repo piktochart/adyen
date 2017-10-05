@@ -233,6 +233,26 @@ module Adyen
         execute_request(request)
       end
 
+      class DisableRecurringDetailResponse < Adyen::REST::Response
+        DISABLED_RESPONSES = %w{ [detail-successfully-disabled] [all-details-successfully-disabled] }
+
+        def success?
+          DISABLED_RESPONSES.include?(attributes['disableResult.response'])
+        end
+      end
+
+      def disable_recurring_detail(attributes)
+        request = disable_recurring_detail_request(attributes)
+        execute_request(request)
+      end
+
+      def disable_recurring_detail_request(attributes = {})
+        Adyen::REST::DisableRecurringDetailPayment::Request.new('Recurring.disable', attributes,
+            prefix: 'disable_request',
+            response_class: Adyen::REST::AuthorisePayment::DisableRecurringDetailResponse,
+            response_options: { prefix: 'disable_result' })
+      end
+
       alias_method :authorize_payment_request, :authorise_payment_request
       alias_method :authorize_payment, :authorise_payment
       alias_method :authorize_payment_3dsecure_request, :authorise_payment_3dsecure_request
