@@ -43,5 +43,18 @@ module Adyen
         end
       end
     end
+
+    module DisableRecurringDetailPayment
+      class Request < Adyen::REST::Request
+        def initialize(action, attributes, options)
+          attributes[:recurring] ||= { contract: 'RECURRING' }
+          super(action, attributes, options)
+          @required_attributes += ['disableRequest.merchantAccount',
+            'disableRequest.recurring.contract',
+            'disableRequest.shopperReference',
+            'disableRequest.recurringDetailReference']
+        end
+      end
+    end
   end
 end
