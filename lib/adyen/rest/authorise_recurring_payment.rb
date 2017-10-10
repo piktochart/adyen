@@ -8,7 +8,7 @@ module Adyen
         def initialize(action, attributes, options)
           attributes[:recurring] ||= { contract: 'RECURRING' }
           super(action, attributes, options)
-          @required_attributes += ['paymentRequest.shopperEmail',
+          @required_attributes += [
             'paymentRequest.recurring.contract',
             'paymentRequest.shopperReference',
           ]
@@ -23,7 +23,7 @@ module Adyen
           attributes[:shopper_interaction] ||= 'ContAuth'
           attributes[:selected_recurring_detail_reference] ||= 'LATEST'
           super(action, attributes, options)
-          @required_attributes += ['paymentRequest.shopperEmail',
+          @required_attributes += [
             'paymentRequest.shopperReference',
             'paymentRequest.recurring.contract',
             'paymentRequest.shopperInteraction'
